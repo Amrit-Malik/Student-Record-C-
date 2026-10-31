@@ -23,6 +23,8 @@ int studentCount = 0;
 void displayMenu();
 void addStudent();
 void displayAllStudents();
+void searchStudent();
+void deleteStudent();
 
 int main()
 {
@@ -42,7 +44,7 @@ int main()
                 break;
 
             case 2:
-                printf("\nSearch Student feature will be added next.\n");
+                searchStudent();
                 break;
 
             case 3:
@@ -50,7 +52,7 @@ int main()
                 break;
 
             case 4:
-                printf("\nDelete Student feature will be added next.\n");
+                deleteStudent();
                 break;
 
             case 5:
@@ -199,5 +201,99 @@ void displayAllStudents()
         }
 
         printf("\n");
+    }
+}
+void searchStudent()
+{
+    long long searchSapId;
+    int i, j;
+    int found = 0;
+
+    if (studentCount == 0)
+    {
+        printf("\nNo student records available.\n");
+        return;
+    }
+
+    printf("\n========== SEARCH STUDENT ==========\n");
+    printf("Enter SAP ID to search: ");
+    scanf("%lld", &searchSapId);
+
+    for (i = 0; i < studentCount; i++)
+    {
+        if (students[i].sapId == searchSapId)
+        {
+            printf("\nStudent Found!\n");
+            printf("-----------------------------------------\n");
+
+            printf("SAP ID       : %lld\n", students[i].sapId);
+            printf("Roll No      : %s\n", students[i].rollNo);
+            printf("Name         : %s\n", students[i].name);
+            printf("Phone No     : %s\n", students[i].phone);
+            printf("Email ID     : %s\n", students[i].email);
+            printf("Year         : %d\n", students[i].year);
+            printf("Semester     : %d\n", students[i].semester);
+
+            printf("SGPA         : ");
+
+            for (j = 0; j < students[i].semester; j++)
+            {
+                printf("Sem %d = %.2f", j + 1, students[i].sgpa[j]);
+
+                if (j < students[i].semester - 1)
+                {
+                    printf(", ");
+                }
+            }
+
+            printf("\n");
+
+            found = 1;
+            break;
+        }
+    }
+
+    if (found == 0)
+    {
+        printf("\nStudent with SAP ID %lld not found.\n", searchSapId);
+    }
+}
+void deleteStudent()
+{
+    long long deleteSapId;
+    int i, j;
+    int found = 0;
+
+    if (studentCount == 0)
+    {
+        printf("\nNo student records available.\n");
+        return;
+    }
+
+    printf("\n========== DELETE STUDENT ==========\n");
+    printf("Enter SAP ID to delete: ");
+    scanf("%lld", &deleteSapId);
+
+    for (i = 0; i < studentCount; i++)
+    {
+        if (students[i].sapId == deleteSapId)
+        {
+            for (j = i; j < studentCount - 1; j++)
+            {
+                students[j] = students[j + 1];
+            }
+
+            studentCount--;
+
+            printf("\nStudent record deleted successfully!\n");
+
+            found = 1;
+            break;
+        }
+    }
+
+    if (found == 0)
+    {
+        printf("\nStudent with SAP ID %lld not found.\n", deleteSapId);
     }
 }
