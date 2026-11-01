@@ -1,3 +1,6 @@
+/* Name - Amrit Malik
+SAP ID - 590032657
+Batch No. 20 */
 #include <stdio.h>
 #include <string.h>
 
@@ -25,6 +28,11 @@ void addStudent();
 void displayAllStudents();
 void searchStudent();
 void deleteStudent();
+float calculateCGPA(struct Student s);
+void displayCGPA();
+void displayYearWiseAverage();
+void sortBySapId();
+void sortByName();
 
 int main()
 {
@@ -56,19 +64,19 @@ int main()
                 break;
 
             case 5:
-                printf("\nCGPA calculation feature will be added next.\n");
+                displayCGPA();
                 break;
 
             case 6:
-                printf("\nYear-wise average CGPA feature will be added next.\n");
+                displayYearWiseAverage();
                 break;
 
             case 7:
-                printf("\nSorting by SAP ID will be added next.\n");
+                sortBySapId();
                 break;
 
             case 8:
-                printf("\nSorting by Name will be added next.\n");
+                sortByName();
                 break;
 
             case 9:
@@ -295,5 +303,194 @@ void deleteStudent()
     if (found == 0)
     {
         printf("\nStudent with SAP ID %lld not found.\n", deleteSapId);
+    }
+}
+float calculateCGPA(struct Student s)
+{
+    float sum = 0.0;
+    int count = 0;
+    int i;
+
+    for (i = 0; i < s.semester; i++)
+    {
+        if (s.sgpa[i] > 0)
+        {
+            sum = sum + s.sgpa[i];
+            count++;
+        }
+    }
+
+    if (count == 0)
+    {
+        return 0.0;
+    }
+
+    return sum / count;
+}
+void displayCGPA()
+{
+    long long searchSapId;
+    int i;
+    int found = 0;
+    float cgpa;
+
+    if (studentCount == 0)
+    {
+        printf("\nNo student records available.\n");
+        return;
+    }
+
+    printf("\n========== CALCULATE CGPA ==========\n");
+    printf("Enter SAP ID: ");
+    scanf("%lld", &searchSapId);
+
+    for (i = 0; i < studentCount; i++)
+    {
+        if (students[i].sapId == searchSapId)
+        {
+            cgpa = calculateCGPA(students[i]);
+
+            printf("\nStudent Name : %s\n", students[i].name);
+            printf("SAP ID       : %lld\n", students[i].sapId);
+            printf("CGPA         : %.2f\n", cgpa);
+
+            found = 1;
+            break;
+        }
+    }
+
+    if (found == 0)
+    {
+        printf("\nStudent with SAP ID %lld not found.\n", searchSapId);
+    }
+}
+void displayYearWiseAverage()
+{
+    int year, i;
+    int count;
+    float totalCGPA;
+    float averageCGPA;
+
+    if (studentCount == 0)
+    {
+        printf("\nNo student records available.\n");
+        return;
+    }
+
+    printf("\n========== YEAR-WISE AVERAGE CGPA ==========\n");
+
+    for (year = 1; year <= 4; year++)
+    {
+        totalCGPA = 0.0;
+        count = 0;
+
+        for (i = 0; i < studentCount; i++)
+        {
+            if (students[i].year == year)
+            {
+                totalCGPA = totalCGPA + calculateCGPA(students[i]);
+                count++;
+            }
+        }
+
+        if (count > 0)
+        {
+            averageCGPA = totalCGPA / count;
+
+            printf("Year %d Average CGPA: %.2f\n",
+                   year, averageCGPA);
+        }
+        else
+        {
+            printf("Year %d: No student records available.\n", year);
+        }
+    }
+}
+void sortBySapId()
+{
+    struct Student temp[MAX_STUDENTS];
+    struct Student swap;
+    int i, j;
+
+    if (studentCount == 0)
+    {
+        printf("\nNo student records available.\n");
+        return;
+    }
+
+    /* Copy records so original order is not changed */
+    for (i = 0; i < studentCount; i++)
+    {
+        temp[i] = students[i];
+    }
+
+    /* Bubble sort by SAP ID */
+    for (i = 0; i < studentCount - 1; i++)
+    {
+        for (j = 0; j < studentCount - i - 1; j++)
+        {
+            if (temp[j].sapId > temp[j + 1].sapId)
+            {
+                swap = temp[j];
+                temp[j] = temp[j + 1];
+                temp[j + 1] = swap;
+            }
+        }
+    }
+
+    printf("\n========== STUDENTS SORTED BY SAP ID ==========\n");
+
+    for (i = 0; i < studentCount; i++)
+    {
+        printf("\nSAP ID   : %lld\n", temp[i].sapId);
+        printf("Roll No  : %s\n", temp[i].rollNo);
+        printf("Name     : %s\n", temp[i].name);
+        printf("Year     : %d\n", temp[i].year);
+        printf("Semester : %d\n", temp[i].semester);
+        printf("CGPA     : %.2f\n", calculateCGPA(temp[i]));
+    }
+}
+void sortByName()
+{
+    struct Student temp[MAX_STUDENTS];
+    struct Student swap;
+    int i, j;
+
+    if (studentCount == 0)
+    {
+        printf("\nNo student records available.\n");
+        return;
+    }
+
+    /* Copy records so original order is not changed */
+    for (i = 0; i < studentCount; i++)
+    {
+        temp[i] = students[i];
+    }
+
+    /* Bubble sort alphabetically by name */
+    for (i = 0; i < studentCount - 1; i++)
+    {
+        for (j = 0; j < studentCount - i - 1; j++)
+        {
+            if (strcmp(temp[j].name, temp[j + 1].name) > 0)
+            {
+                swap = temp[j];
+                temp[j] = temp[j + 1];
+                temp[j + 1] = swap;
+            }
+        }
+    }
+
+    printf("\n========== STUDENTS SORTED BY NAME ==========\n");
+
+    for (i = 0; i < studentCount; i++)
+    {
+        printf("\nName     : %s\n", temp[i].name);
+        printf("SAP ID   : %lld\n", temp[i].sapId);
+        printf("Roll No  : %s\n", temp[i].rollNo);
+        printf("Year     : %d\n", temp[i].year);
+        printf("Semester : %d\n", temp[i].semester);
+        printf("CGPA     : %.2f\n", calculateCGPA(temp[i]));
     }
 }
