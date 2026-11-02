@@ -33,6 +33,7 @@ void displayCGPA();
 void displayYearWiseAverage();
 void sortBySapId();
 void sortByName();
+void academicAdvisor();
 
 int main()
 {
@@ -80,7 +81,7 @@ int main()
                 break;
 
             case 9:
-                printf("\nAI-Assisted Academic Advisor will be added next.\n");
+                academicAdvisor();
                 break;
 
             case 0:
@@ -492,5 +493,63 @@ void sortByName()
         printf("Year     : %d\n", temp[i].year);
         printf("Semester : %d\n", temp[i].semester);
         printf("CGPA     : %.2f\n", calculateCGPA(temp[i]));
+    }
+}
+void academicAdvisor()
+{
+    long long searchSapId;
+    int i;
+    int found = 0;
+    float cgpa;
+
+    if (studentCount == 0)
+    {
+        printf("\nNo student records available.\n");
+        return;
+    }
+
+    printf("\n========== AI-ASSISTED ACADEMIC ADVISOR ==========\n");
+    printf("Enter SAP ID: ");
+    scanf("%lld", &searchSapId);
+
+    for (i = 0; i < studentCount; i++)
+    {
+        if (students[i].sapId == searchSapId)
+        {
+            cgpa = calculateCGPA(students[i]);
+
+            printf("\nStudent Name : %s\n", students[i].name);
+            printf("SAP ID       : %lld\n", students[i].sapId);
+            printf("CGPA         : %.2f\n", cgpa);
+
+            if (cgpa >= 9.0)
+            {
+                printf("Category     : Excellent Performance\n");
+                printf("Advice       : Maintain your current study pattern and continue challenging yourself.\n");
+            }
+            else if (cgpa >= 7.5)
+            {
+                printf("Category     : Good Performance\n");
+                printf("Advice       : Keep working consistently and focus on improving weaker subjects.\n");
+            }
+            else if (cgpa >= 6.0)
+            {
+                printf("Category     : Needs Improvement\n");
+                printf("Advice       : Focus more on subjects with lower SGPA and follow a regular study schedule.\n");
+            }
+            else
+            {
+                printf("Category     : Requires Immediate Attention\n");
+                printf("Advice       : Review difficult subjects, seek academic support, and increase regular practice.\n");
+            }
+
+            found = 1;
+            break;
+        }
+    }
+
+    if (found == 0)
+    {
+        printf("\nStudent with SAP ID %lld not found.\n", searchSapId);
     }
 }
