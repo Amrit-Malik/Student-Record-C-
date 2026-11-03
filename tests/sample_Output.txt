@@ -1,0 +1,27 @@
+SAMPLE OUTPUT - AI-ASSISTED ACADEMIC ADVISOR
+
+Test Case 1
+
+Student Name : Aarav Sharma
+SAP ID       : 590032701
+CGPA         : 9.30
+Category     : Excellent Performance
+Advice       : Maintain your current study pattern and continue challenging yourself.
+
+
+Test Case 2
+
+Student Name : Riya Gupta
+SAP ID       : 590032702
+CGPA         : 8.20
+Category     : Good Performance
+Advice       : Keep working consistently and focus on improving weaker subjects.
+
+
+Test Case 3
+
+Student Name : Karan Singh
+SAP ID       : 590032703
+CGPA         : 6.70
+Category     : Needs Improvement
+Advice       : Focus more on subjects with lower SGPA and follow a regular study schedule.
